@@ -15,6 +15,7 @@ from langgraph.store.base import BaseStore
 
 from src.config.llm_config import get_private_agent_llm
 from src.agents.state import RAGState, Source
+from src.agents.input_normalization import extract_message
 from src.agents.memory import (
     get_user_id_from_config,
     save_user_memory,
@@ -109,7 +110,15 @@ async def private_agent_node(
     Returns:
         Diccionario con la respuesta, fuentes y estado actualizado.
     """
-    message = state["message"]
+    message = extract_message(state)
+    if not message:
+        return {
+            "retrieved_context": [],
+            "response": "No recibí un mensaje válido para procesar.",
+            "sources": [],
+            "current_agent": "private_agent",
+            "messages": [],
+        }
     memory_context = state.get("memory_context", "")
     existing_messages = state.get("messages", [])
     
