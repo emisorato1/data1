@@ -1,0 +1,84 @@
+langfuse:
+  encryptionKey:
+    secretKeyRef:
+      name: langfuse-secrets
+      key: encryption-key
+
+  salt:
+    secretKeyRef:
+      name: langfuse-secrets
+      key: salt
+
+  nextauth:
+    secret:
+      secretKeyRef:
+        name: langfuse-secrets
+        key: nextauth-secret
+
+postgresql:
+  auth:
+    existingSecret: langfuse-secrets
+    secretKeys:
+      adminPasswordKey: postgresql-password
+      userPasswordKey: postgresql-password
+  primary:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+clickhouse:
+  auth:
+    existingSecret: langfuse-secrets
+    existingSecretKey: clickhouse-password
+  # Reducir réplicas para dev (default es 3)
+  replicaCount: 1
+  # Desactivar preset y usar recursos mínimos para dev
+  resourcesPreset: "none"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 400m
+      memory: 512Mi
+  # Configuración de Zookeeper (subchart de Bitnami)
+  zookeeper:
+    replicaCount: 1
+    resourcesPreset: "none"
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 150m
+        memory: 128Mi
+
+redis:
+  auth:
+    existingSecret: langfuse-secrets
+    existingSecretPasswordKey: redis-password
+  master:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 150m
+        memory: 128Mi
+
+s3:
+  auth:
+    existingSecret: langfuse-secrets
+    rootUserSecretKey: s3-user
+    rootPasswordSecretKey: s3-password
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi

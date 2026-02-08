@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pipeline-docx"
+version = "0.1.0"
+description = "Pipeline de ingesta de archivos DOCX con chunking semántico y pgvector"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+authors = [
+    { name = "Agustin", email = "agussseze@gmail.com" }
+]
+
+dependencies = [
+    "sentence-transformers",
+    "psycopg2-binary",
+    "python-docx",
+    "nltk",
+    "scikit-learn",
+    "python-dotenv",
+    "requests",
+]
+
+[tool.setuptools]
+packages = ["src"]

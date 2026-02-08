@@ -1,0 +1,24 @@
+services:
+  pgvector:
+    image: pgvector/pgvector:pg15
+    container_name: pgvector-docx-db
+    env_file:
+      - .env.general
+    volumes:
+      - pgdata-docx:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin-docx
+    ports:
+      - "5051:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - pgvector
+
+volumes:
+  pgdata-docx:

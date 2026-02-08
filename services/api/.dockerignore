@@ -1,0 +1,13 @@
+.venv
+__pycache__
+*.pyc
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.git
+.gitignore
+.DS_Store
+.env
+.env.*
+postgres_data
+pgadmin_data

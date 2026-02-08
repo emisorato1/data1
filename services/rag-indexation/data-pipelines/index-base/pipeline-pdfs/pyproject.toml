@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "index-base"
+version = "0.1.0"
+description = "Pipeline de ingesta, chunking semántico y base vectorial en PostgreSQL/pgvector"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+authors = [
+	{ name = "Agustin", email = "agussseze@gmail.com" }
+]
+
+
+# Dependencias principales que realmente se usan en src/
+# (pueden ajustarse si agregás/quitás librerías)
+
+dependencies = [
+	"psycopg[binary]",
+	"pypdf",
+	"python-dotenv",
+	"requests",
+	"openai",
+	"langfuse",
+]
+
+[tool.setuptools]
+packages = ["src"]
+

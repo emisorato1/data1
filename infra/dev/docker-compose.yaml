@@ -1,0 +1,209 @@
+# ============================================================================
+# Enterprise AI Platform - Docker Compose (Development)
+# ============================================================================
+# Uso con archivo centralizado:
+#   docker compose --env-file ../../.env.general up -d
+#
+# O mediante enlace simbólico:
+#   ln -s ../../.env.general .env && docker compose up -d
+#
+# Servicios: postgres, api-gateway, agentic-rag, frontend
+# ============================================================================
+
+services:
+  # ==========================================================================
+  # BASE DE DATOS - PostgreSQL con pgvector (Platform DB + Vector DB)
+  # ==========================================================================
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: eai-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "55432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - eai-network
+
+  # ==========================================================================
+  # API GATEWAY - FastAPI (Punto de entrada principal)
+  # ==========================================================================
+  api-gateway:
+    build:
+      context: ../../services/api
+      dockerfile: Dockerfile
+    container_name: eai-api-gateway
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # Base de datos
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+
+      # Langfuse Observability
+      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY}
+      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY}
+      LANGFUSE_BASE_URL: ${LANGFUSE_BASE_URL:-https://us.cloud.langfuse.com}
+      LANGFUSE_ENABLED: ${LANGFUSE_ENABLED}
+
+      # JWT - Autenticacion
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ALGORITHM: ${JWT_ALGORITHM}
+      JWT_EXPIRES_MINUTES: ${JWT_EXPIRES_MINUTES}
+
+      # Servicio RAG
+      RAG_BASE_URL: http://agentic-rag:2024
+
+      # CORS
+      CORS_ORIGINS: ${CORS_ORIGINS}
+
+      # Configuracion general
+      ENV: ${ENV}
+
+    volumes:
+      - ../../services/api/app:/app/app
+      - ../../services/api/alembic:/app/alembic
+      - ../../services/api/alembic.ini:/app/alembic.ini
+
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/api/v1/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - eai-network
+
+  # ==========================================================================
+  # AGENTIC RAG - LangGraph Multi-Agent Service
+  # ==========================================================================
+  agentic-rag:
+    build:
+      context: ../../services/rag-generation
+      dockerfile: Dockerfile
+    container_name: eai-agentic-rag
+    restart: unless-stopped
+    ports:
+      - "2024:2024"
+    environment:
+      # OpenAI
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL}
+
+                                                                                                                                                                                                                                                                                              # PostgreSQL pgvector (para búsqueda de documentos)
+      PGVECTOR_HOST: postgres
+      PGVECTOR_PORT: 5432
+      PGVECTOR_DATABASE: ${POSTGRES_DB}
+      PGVECTOR_USER: ${POSTGRES_USER}
+      PGVECTOR_PASSWORD: ${POSTGRES_PASSWORD}
+
+      # PostgreSQL URI (para LangGraph Store - long-term memory)                                                                                                                  
+      POSTGRES_URI: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+
+      # LangSmith (opcional)
+      LANGSMITH_TRACING: ${LANGSMITH_TRACING:-false}
+      LANGSMITH_API_KEY: ${LANGSMITH_API_KEY}
+      LANGSMITH_PROJECT: ${LANGSMITH_PROJECT}
+    volumes:
+      - ../../services/rag-generation/src:/app/src
+    # Servidor custom FastAPI con AsyncPostgresSaver + AsyncPostgresStore
+    # Persistencia completa de conversaciones y memorias en PostgreSQL
+    command: [ "uvicorn", "src.server:app", "--host", "0.0.0.0", "--port", "2024", "--reload" ]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:2024/info" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - eai-network
+
+  # ==========================================================================
+  # FRONTEND - Next.js Chat Interface
+  # ==========================================================================
+  frontend:
+    build:
+      context: ../../frontends/rag-chat
+      dockerfile: Dockerfile
+    container_name: eai-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    volumes:
+      - ../../frontends/rag-chat:/app
+      - /app/node_modules
+      - /app/.next
+    command: npm run dev
+    depends_on:
+      - api-gateway
+    networks:
+      - eai-network
+
+  # ==========================================================================
+  # PGADMIN - PostgreSQL Admin Interface
+  # ==========================================================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: eai-pgadmin
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@dataoilers.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin123}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      # Reducir logging verboso
+      PGADMIN_CONFIG_CONSOLE_LOG_LEVEL: "40" # 40 = ERROR (solo errores)
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - eai-network
+
+# ============================================================================
+# VOLUMES
+# ============================================================================
+volumes:
+  postgres_data:
+    name: eai-postgres-data
+  pgadmin_data:
+    name: eai-pgadmin-data
+
+# ============================================================================
+# NETWORKS
+# ============================================================================
+networks:
+  eai-network:
+    name: eai-network
+    driver: bridge

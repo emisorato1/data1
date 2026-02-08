@@ -1,0 +1,27 @@
+# Ignora todos los archivos y carpetas por defecto
+**
+
+# Incluye carpetas que no deben ser ignoradas
+!frontends/
+!services/
+!core/
+
+# Ignora archivos y carpetas específicos
+**/__pycache__/
+**/.pytest_cache/
+**/.venv/
+**/.DS_Store
+**/*.py[cod]
+**/*.egg-info/
+**/*.log
+**/dist/
+**/build/
+**/node_modules/
+**/.coverage
+
+# Ignora carpetas de tests
+**/tests/
+
+# Ignora herramientas locales
+**/.vscode/
+**/.devcontainer/
