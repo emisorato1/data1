@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Brand Colors Banco Macro */
+    --brand-primary: 225 100% 45%;
+    /* #0039E3 - Azul Macro */
+    --brand-primary-dark: 223 100% 24%;
+    /* #00237C */
+    --brand-primary-light: 226 100% 59%;
+    /* #2D5FFF */
+    --brand-text: 209 17% 25%;
+    /* #343F49 - Textos principales */
+    --brand-bg: 213 100% 96%;
+    /* #E9F3FF - Bg/Tonos muy claros */
+    --brand-bg-2: 215 100% 91%;
+    /* #CFE3FF - Secondary claro */
+    --brand-accent: 223 100% 68%;
+    /* #5A89FF - Accent */
+
+    /* Segment Colors */
+    --brand-individuos: 324 100% 75%;
+    /* #FF7DCB */
+    --brand-agro: 137 68% 44%;
+    /* #24BA4E */
+
+    /* Theme - Light */
+    --background: 180 20% 98%;
+    /* #F8FAFA Neutral 100 */
+    --foreground: var(--brand-text);
+
+    /* Cards / Containers */
+    --card: 0 0% 100%;
+    /* #FEFEFE Neutral 50 */
+    --card-foreground: var(--brand-text);
+
+    /* Popovers */
+    --popover: 0 0% 100%;
+    --popover-foreground: var(--brand-text);
+
+    /* Primary */
+    --primary: var(--brand-primary);
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary */
+    --secondary: var(--brand-bg-2);
+    --secondary-foreground: var(--brand-primary-dark);
+
+    /* Muted */
+    --muted: 215 25% 94%;
+    --muted-foreground: 209 15% 45%;
+
+    /* Accent */
+    --accent: var(--brand-bg-2);
+    --accent-foreground: var(--brand-primary-dark);
+
+    /* Destructive */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders */
+    --border: 180 4% 77%;
+    /* #C4C7C7 Neutral 400 */
+    --input: 180 4% 77%;
+    --ring: var(--brand-primary);
+    --radius: 0.75rem;
+    /* 12px Border Radius */
+
+    /* Custom tokens */
+    --sidebar-bg: 0 0% 100%;
+    --sidebar-border: 215 30% 90%;
+    --message-user-bg: var(--brand-primary);
+    --message-assistant-bg: 0 0% 100%;
+    --surface: 0 0% 100%;
+  }
+
+  .dark {
+    /* Theme - Dark (using brand allowed variations) */
+    --background: 223 60% 8%;
+    /* Very dark blue from #00237C */
+    --foreground: 215 100% 96%;
+    /* Very light blue text */
+
+    --card: 223 55% 12%;
+    --card-foreground: 215 100% 96%;
+
+    --popover: 223 55% 12%;
+    --popover-foreground: 215 100% 96%;
+
+    --primary: var(--brand-primary-light);
+    /* Lighter blue for dark mode visibility */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 223 50% 20%;
+    --secondary-foreground: 215 100% 96%;
+
+    --muted: 223 45% 15%;
+    --muted-foreground: 215 40% 70%;
+
+    --accent: 223 50% 20%;
+    --accent-foreground: 215 100% 96%;
+
+    --destructive: 0 62% 38%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 223 45% 20%;
+    --input: 223 45% 20%;
+    --ring: var(--brand-primary-light);
+
+    --sidebar-bg: 223 65% 6%;
+    --sidebar-border: 223 45% 20%;
+    --message-user-bg: var(--brand-primary-light);
+    --message-assistant-bg: 223 55% 12%;
+    --surface: 223 55% 12%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+  }
+
+  /* Scrollbar mínima y elegante */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/40;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Gradiente de fade hacia arriba para el área de mensajes */
+  .fade-top {
+    mask-image: linear-gradient(to bottom, transparent 0%, black 5%);
+  }
+}

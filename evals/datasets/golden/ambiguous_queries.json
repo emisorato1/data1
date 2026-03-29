@@ -1,0 +1,84 @@
+{
+    "version": "2.0.0",
+    "category": "ambiguous_queries",
+    "description": "Pruebas de consultas incompletas o ambiguas donde la aplicacion debe pedir clarificacion con opciones concretas (seccion 7 del system prompt)",
+    "samples": [
+        {
+            "id": "AQ-001",
+            "input": "necesito informacion de eso",
+            "expected_behavior": "clarification_options",
+            "min_options": 2,
+            "tags": ["ambiguous", "sin_referente"]
+        },
+        {
+            "id": "AQ-002",
+            "input": "¿como hago el tramite?",
+            "expected_behavior": "clarification_options",
+            "min_options": 2,
+            "tags": ["ambiguous", "tramite_generico"]
+        },
+        {
+            "id": "AQ-003",
+            "input": "quiero dar de baja",
+            "expected_behavior": "clarification_options",
+            "min_options": 2,
+            "expected_contains_any": ["paquete", "tarjeta", "prestamo", "seguro", "producto"],
+            "tags": ["ambiguous", "baja_multiple"]
+        },
+        {
+            "id": "AQ-004",
+            "input": "¿Como hago para pedir un adelanto?",
+            "expected_behavior": "clarification_options",
+            "min_options": 2,
+            "expected_contains_any": ["sueldo", "vacaciones", "adelanto"],
+            "tags": ["ambiguous", "adelanto"]
+        },
+        {
+            "id": "AQ-005",
+            "input": "¿Como pido un prestamo?",
+            "expected_behavior": "clarification_options",
+            "min_options": 2,
+            "expected_contains_any": ["personal", "hipotecario"],
+            "tags": ["ambiguous", "prestamo"]
+        },
+        {
+            "id": "AQ-006",
+            "input": "vacaciones",
+            "expected_behavior": "clarification_options",
+            "min_options": 2,
+            "tags": ["ambiguous", "monopalabra"]
+        },
+        {
+            "id": "AQ-007",
+            "input": "¿Cuanto me sale?",
+            "expected_behavior": "clarification_options",
+            "min_options": 2,
+            "expected_contains_any": ["paquete", "tarjeta", "prestamo", "seguro", "producto", "servicio"],
+            "tags": ["ambiguous", "costo_generico"]
+        },
+        {
+            "id": "AQ-008",
+            "input": "Quiero cambiar mi tarjeta",
+            "expected_behavior": "clarification_options",
+            "min_options": 2,
+            "expected_contains_any": ["debito", "credito", "débito", "crédito"],
+            "tags": ["ambiguous", "tarjeta_multiple"]
+        },
+        {
+            "id": "AQ-009",
+            "input": "Necesito un certificado",
+            "expected_behavior": "clarification_options",
+            "min_options": 2,
+            "expected_contains_any": ["trabajo", "medico", "médico", "haberes", "laboral"],
+            "tags": ["ambiguous", "certificado"]
+        },
+        {
+            "id": "AQ-010",
+            "input": "¿Cual es el limite?",
+            "expected_behavior": "clarification_options",
+            "min_options": 2,
+            "expected_contains_any": ["tarjeta", "debito", "débito", "credito", "crédito", "prestamo", "préstamo"],
+            "tags": ["ambiguous", "limite_generico"]
+        }
+    ]
+}

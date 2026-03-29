@@ -1,0 +1,48 @@
+{
+  "samples": [
+    {
+      "question": "Que es un paquete de productos?",
+      "ground_truth": "Un paquete de productos es una combinacion de servicios bancarios comercializada como una propuesta unificada para el cliente.",
+      "contexts": [
+        "Los paquetes de productos agrupan distintos servicios bancarios en una oferta comercial unica para facilitar la adopcion y retencion de clientes."
+      ],
+      "metadata": {
+        "area": "productos",
+        "source_hint": "PAQ001"
+      }
+    },
+    {
+      "question": "Como solicito la baja de un paquete?",
+      "ground_truth": "La baja de un paquete debe solicitarse por el circuito operativo definido, registrando la peticion del cliente y ejecutando las validaciones previas correspondientes.",
+      "contexts": [
+        "La solicitud de baja de paquete requiere registrar el pedido del cliente, validar el estado del producto y completar el circuito operativo definido por el banco."
+      ],
+      "metadata": {
+        "area": "productos",
+        "source_hint": "PAQ002"
+      }
+    },
+    {
+      "question": "Cual es el plazo maximo de un prestamo personal?",
+      "ground_truth": "El plazo maximo del prestamo personal es de 60 meses.",
+      "contexts": [
+        "Los prestamos personales pueden otorgarse hasta un plazo maximo de 60 meses, sujeto a las politicas vigentes y al perfil del cliente."
+      ],
+      "metadata": {
+        "area": "prestamos",
+        "source_hint": "PP001"
+      }
+    },
+    {
+      "question": "Como denunciar un accidente de trabajo?",
+      "ground_truth": "La denuncia de un accidente de trabajo debe realizarse de inmediato por el circuito de Salud, Prevencion y Medio Ambiente y conforme a las pautas internas de RRHH.",
+      "contexts": [
+        "Ante un accidente de trabajo, la denuncia debe efectuarse de inmediato siguiendo el procedimiento interno de Salud, Prevencion y Medio Ambiente definido por RRHH."
+      ],
+      "metadata": {
+        "area": "rrhh",
+        "source_hint": "008 RRHH"
+      }
+    }
+  ]
+}

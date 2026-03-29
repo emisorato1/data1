@@ -1,0 +1,57 @@
+{
+  "version": "2.0.0",
+  "status": "gold",
+  "created": "2026-03-18",
+  "last_reviewed": "2026-03-26",
+  "reviewer": "Franco Manca",
+  "description": "Golden evaluation dataset for enterprise RAG pipeline — 86 samples across 9 categories",
+  "source_corpus": "tests/data/demo/ (22 banking documents)",
+  "categories": {
+    "retrieval_accuracy": {
+      "file": "retrieval_accuracy.json",
+      "count": 18,
+      "id_prefix": "RA"
+    },
+    "memory_shortterm": {
+      "file": "memory_shortterm.json",
+      "count": 12,
+      "id_prefix": "MS"
+    },
+    "memory_episodic": {
+      "file": "memory_episodic.json",
+      "count": 10,
+      "id_prefix": "ME"
+    },
+    "guardrails_input": {
+      "file": "guardrails_input.json",
+      "count": 9,
+      "id_prefix": "GI"
+    },
+    "topic_classification": {
+      "file": "topic_classification.json",
+      "count": 8,
+      "id_prefix": "TC"
+    },
+    "guardrails_output": {
+      "file": "guardrails_output.json",
+      "count": 6,
+      "id_prefix": "GO"
+    },
+    "system_prompt_behavior": {
+      "file": "system_prompt_behavior.json",
+      "count": 6,
+      "id_prefix": "SP"
+    },
+    "ambiguous_queries": {
+      "file": "ambiguous_queries.json",
+      "count": 10,
+      "id_prefix": "AQ"
+    },
+    "cache_behavior": {
+      "file": "cache_behavior.json",
+      "count": 8,
+      "id_prefix": "CB"
+    }
+  },
+  "total_samples": 87
+}

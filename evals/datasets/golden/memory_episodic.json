@@ -1,0 +1,118 @@
+{
+  "version": "2.0.0",
+  "category": "memory_episodic",
+  "description": "Pares cross-session que validan almacenamiento y recuperacion de memorias episodicas entre sesiones",
+  "samples": [
+    {
+      "id": "ME-001",
+      "pair": 1,
+      "session": "S1",
+      "phase": "store",
+      "input": "Siempre respondeme con vinetas, no parrafos largos",
+      "expected_behavior": "store_preference",
+      "expected_contains_any": ["vineta", "viñeta", "lista", "formato", "entendido", "cuenta", "preferencia"],
+      "memory_type": "instruccion_explicita",
+      "tags": ["formato", "preferencia"]
+    },
+    {
+      "id": "ME-002",
+      "pair": 1,
+      "session": "S2",
+      "phase": "recall",
+      "input": "¿Que beneficios de gimnasio tengo?",
+      "expected_behavior": "apply_preference",
+      "expected_contains_any": ["Sportclub", "Wellhub", "gimnasio"],
+      "validation": "La respuesta debe usar formato de vinetas/lista, no parrafos",
+      "tags": ["formato", "preferencia", "recall"]
+    },
+    {
+      "id": "ME-003",
+      "pair": 2,
+      "session": "S1",
+      "phase": "store",
+      "input": "Trabajo en el area de RRHH y me encargo de onboarding",
+      "expected_behavior": "store_preference",
+      "expected_contains_any": ["RRHH", "recursos humanos", "onboarding", "entendido", "cuenta"],
+      "memory_type": "contexto_laboral",
+      "tags": ["rol", "contexto"]
+    },
+    {
+      "id": "ME-004",
+      "pair": 2,
+      "session": "S2",
+      "phase": "recall",
+      "input": "¿Que programas tenemos para nuevos lideres?",
+      "expected_behavior": "personalize_by_role",
+      "expected_contains_any": ["Macro Impulso", "lideres", "líderes", "Macro Lideres", "Macro Líderes", "desarrollo"],
+      "validation": "Debe priorizar Macro Impulso dado el rol de RRHH/onboarding",
+      "tags": ["rol", "personalizacion", "recall"]
+    },
+    {
+      "id": "ME-005",
+      "pair": 3,
+      "session": "S1",
+      "phase": "store",
+      "input": "Mi DNI es 32.456.789 y trabajo en compliance",
+      "expected_behavior": "store_with_pii_sanitization",
+      "expected_contains_any": ["compliance", "entendido", "cuenta", "registrado"],
+      "memory_type": "dato_personal",
+      "tags": ["pii", "sanitizacion"]
+    },
+    {
+      "id": "ME-006",
+      "pair": 3,
+      "session": "S2",
+      "phase": "recall",
+      "input": "¿Que procedimientos de compliance debo seguir?",
+      "expected_behavior": "personalize_by_role",
+      "expected_contains_any": ["compliance", "normativa", "regulacion", "regulación"],
+      "should_not_contain": ["32.456.789", "32456789"],
+      "validation": "La respuesta debe personalizar por el rol de compliance sin exponer el DNI",
+      "tags": ["pii", "sanitizacion", "verificacion"]
+    },
+    {
+      "id": "ME-007",
+      "pair": 4,
+      "session": "S1",
+      "phase": "store",
+      "input": "Trabajo en la sucursal de Cordoba, soy gerente regional",
+      "expected_behavior": "store_preference",
+      "expected_contains_any": ["Cordoba", "Córdoba", "gerente", "entendido", "cuenta"],
+      "memory_type": "contexto_laboral",
+      "tags": ["ubicacion", "contexto"]
+    },
+    {
+      "id": "ME-008",
+      "pair": 4,
+      "session": "S2",
+      "phase": "recall",
+      "input": "¿Donde puedo hacer un control medico?",
+      "expected_behavior": "personalize_by_role",
+      "expected_contains": ["25 de Mayo 160"],
+      "validation": "Debe priorizar el consultorio de Cordoba segun la ubicacion almacenada",
+      "tags": ["ubicacion", "personalizacion", "recall"]
+    },
+    {
+      "id": "ME-009",
+      "pair": 5,
+      "session": "S1",
+      "phase": "store",
+      "input": "Me interesan mucho los beneficios para mi familia",
+      "expected_behavior": "store_preference",
+      "expected_contains_any": ["beneficio", "familia", "entendido", "cuenta", "preferencia"],
+      "memory_type": "preferencia_usuario",
+      "tags": ["interes", "familia"]
+    },
+    {
+      "id": "ME-010",
+      "pair": 5,
+      "session": "S2",
+      "phase": "recall",
+      "input": "¿Que novedades hay de RRHH?",
+      "expected_behavior": "personalize_by_role",
+      "expected_contains_any": ["beneficio", "familia", "guarderia", "guardería", "escolaridad", "hijo", "hijos", "Sportclub"],
+      "validation": "Debe priorizar beneficios familiares dado el interes almacenado",
+      "tags": ["interes", "personalizacion", "recall"]
+    }
+  ]
+}

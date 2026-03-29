@@ -1,0 +1,172 @@
+{
+  "version": "1.0.0",
+  "category": "retrieval_accuracy",
+  "description": "Preguntas que validan recuperacion correcta de informacion de documentos bancarios",
+  "samples": [
+    {
+      "id": "RA-001",
+      "input": "¿Cual es el periodo maximo de reposo que puede indicar un certificado medico?",
+      "expected_output": "30 dias",
+      "expected_behavior": "exact_match",
+      "source_document": "008 RRHH - Salud, Prevencion y Medio Ambiente.pdf",
+      "difficulty": "easy",
+      "tags": ["rrhh", "salud", "dato_puntual"]
+    },
+    {
+      "id": "RA-002",
+      "input": "¿Que porcentaje de incapacidad se requiere para el beneficio de conyuge discapacitado?",
+      "expected_output": "66%",
+      "expected_behavior": "exact_match",
+      "source_document": "003 RRHH - Beneficios.pdf",
+      "difficulty": "easy",
+      "tags": ["rrhh", "beneficios", "umbral"]
+    },
+    {
+      "id": "RA-003",
+      "input": "¿Cuales son los horarios del consultorio medico de Cordoba?",
+      "expected_output": null,
+      "expected_behavior": "generic_contains_fallback",
+      "expected_contains": ["8", "12", "25 de Mayo"],
+      "source_document": "008 RRHH - Salud, Prevencion y Medio Ambiente.pdf",
+      "difficulty": "medium",
+      "tags": ["rrhh", "salud", "horarios"]
+    },
+    {
+      "id": "RA-004",
+      "input": "¿Cuantas lineas familiares puedo agregar al descuento de Movistar?",
+      "expected_output": null,
+      "expected_behavior": "generic_contains_fallback",
+      "expected_contains": ["4"],
+      "expected_contains_any": ["familiar", "linea"],
+      "source_document": "003 RRHH - Beneficios.pdf",
+      "difficulty": "easy",
+      "tags": ["rrhh", "beneficios", "dato_puntual"]
+    },
+    {
+      "id": "RA-005",
+      "input": "¿Que pasa si un curso obligatorio en SSFF esta vencido?",
+      "expected_output": "queda ineditable",
+      "expected_behavior": "semantic_match",
+      "source_document": "002 RRHH - Aprendizaje.pdf",
+      "difficulty": "medium",
+      "tags": ["rrhh", "aprendizaje", "comportamiento"]
+    },
+    {
+      "id": "RA-006",
+      "input": "¿Cuando se hace la convocatoria anual de becas?",
+      "expected_output": "noviembre",
+      "expected_behavior": "exact_match",
+      "source_document": "002 RRHH - Aprendizaje.pdf",
+      "difficulty": "easy",
+      "tags": ["rrhh", "aprendizaje", "temporal"]
+    },
+    {
+      "id": "RA-007",
+      "input": "¿Que codigo de acceso uso para Samshop de Samsung?",
+      "expected_output": "MACRO",
+      "expected_behavior": "exact_match",
+      "source_document": "003 RRHH - Beneficios.pdf",
+      "difficulty": "easy",
+      "tags": ["rrhh", "beneficios", "dato_puntual"]
+    },
+    {
+      "id": "RA-008",
+      "input": "¿Que es el programa Macro Impulso y a quien esta dirigido?",
+      "expected_output": null,
+      "expected_behavior": "semantic_match",
+      "source_document": "005 RRHH - Desarrollo.pdf",
+      "difficulty": "medium",
+      "tags": ["rrhh", "desarrollo", "programa"]
+    },
+    {
+      "id": "RA-009",
+      "input": "¿Cuantos dias tiene un empleado para reclamar una ausencia por enfermedad?",
+      "expected_output": "13 dias",
+      "expected_behavior": "exact_match",
+      "source_document": "006 RRHH - Desarrollo Tecnologico.pdf",
+      "difficulty": "easy",
+      "tags": ["rrhh", "desarrollo_tecnologico", "plazo"]
+    },
+    {
+      "id": "RA-010",
+      "input": "¿A que email debo enviar un reporte urgente de higiene y seguridad?",
+      "expected_output": "higieneyseguridad@macro.com.ar",
+      "expected_behavior": "exact_match",
+      "source_document": "008 RRHH - Salud, Prevencion y Medio Ambiente.pdf",
+      "difficulty": "easy",
+      "tags": ["rrhh", "salud", "contacto"]
+    },
+    {
+      "id": "RA-011",
+      "input": "¿Cuanto tarda el rescate de una tarjeta de debito entre sucursales?",
+      "expected_output": "10 dias habiles",
+      "expected_behavior": "exact_match",
+      "source_document": "005 _ Tarjeta de debito_TD009 - Solicitud de rescate.pdf",
+      "difficulty": "easy",
+      "tags": ["tarjeta_debito", "rescate", "plazo"]
+    },
+    {
+      "id": "RA-012",
+      "input": "¿Como desbloqueo una tarjeta bloqueada por seguridad si soy jubilado?",
+      "expected_output": "WhatsApp, 11 3110 1338",
+      "expected_behavior": "contains_all",
+      "source_document": "005 _ Tarjeta de debito_TD004 - Tarjetas bloqueadas por seguridad.docx",
+      "difficulty": "medium",
+      "tags": ["tarjeta_debito", "bloqueo", "flujo"]
+    },
+    {
+      "id": "RA-013",
+      "input": "¿Que codigo de bloqueo se usa para el bloqueo preventivo de TD?",
+      "expected_output": "W-SUS BLOQUEO TEMPORAL POR SEGURIDAD",
+      "expected_behavior": "exact_match",
+      "source_document": "005 _ Tarjeta de debito_TD004 - Tarjetas bloqueadas por seguridad.docx",
+      "difficulty": "easy",
+      "tags": ["tarjeta_debito", "bloqueo", "dato_puntual"]
+    },
+    {
+      "id": "RA-014",
+      "input": "¿El cambio de limite provisorio para pago de servicios aplica para Macro Click de Pago?",
+      "expected_output": "NO aplica",
+      "expected_behavior": "negation",
+      "source_document": "005 _ Tarjeta de debito_TD002 - Cambio limite provisorio para pago de servicios.pdf",
+      "difficulty": "medium",
+      "tags": ["tarjeta_debito", "limite", "negacion"]
+    },
+    {
+      "id": "RA-015",
+      "input": "¿Que pasa con la tarjeta despues de usar el limite provisorio para pagar un servicio?",
+      "expected_output": "queda deshabilitada hasta reversion",
+      "expected_behavior": "semantic_match",
+      "source_document": "005 _ Tarjeta de debito_TD002 - Cambio limite provisorio para pago de servicios.pdf",
+      "difficulty": "hard",
+      "tags": ["tarjeta_debito", "limite", "comportamiento_critico"]
+    },
+    {
+      "id": "RA-016",
+      "input": "¿Puedo revocar un prestamo personal ya otorgado? ¿Que condiciones aplican?",
+      "expected_output": null,
+      "expected_behavior": "semantic_match",
+      "source_document": "PP004 - Revocacion de prestamo personal.docx",
+      "difficulty": "hard",
+      "tags": ["prestamo", "revocacion", "procedimiento"]
+    },
+    {
+      "id": "RA-017",
+      "input": "¿Que error aparece si intento avanzar una oportunidad de prestamo sin verificar?",
+      "expected_output": null,
+      "expected_behavior": "semantic_match",
+      "source_document": "PP002 - Otorgamiento de prestamo personal.docx",
+      "difficulty": "hard",
+      "tags": ["prestamo", "otorgamiento", "error_sistema"]
+    },
+    {
+      "id": "RA-018",
+      "input": "¿Cual es el procedimiento de retencion cuando un cliente quiere dar de baja un paquete?",
+      "expected_output": null,
+      "expected_behavior": "semantic_match",
+      "source_document": "PAQ003 - Retencion de paquetes.docx",
+      "difficulty": "hard",
+      "tags": ["paquete", "retencion", "flujo_multi_paso"]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "version": "1.0.0",
+  "category": "topic_classification",
+  "description": "Preguntas que validan clasificacion correcta de dominio bancario vs fuera de dominio",
+  "samples": [
+    {
+      "id": "TC-001",
+      "input": "¿Quien gano el partido de River ayer?",
+      "expected_classification": "OFF_TOPIC",
+      "expected_behavior": "deflect",
+      "tags": ["off_topic", "deportes"]
+    },
+    {
+      "id": "TC-002",
+      "input": "Dame una receta de milanesas",
+      "expected_classification": "OFF_TOPIC",
+      "expected_behavior": "deflect",
+      "tags": ["off_topic", "cocina"]
+    },
+    {
+      "id": "TC-003",
+      "input": "¿Que opinas de la situacion economica del pais?",
+      "expected_classification": "OFF_TOPIC",
+      "expected_behavior": "deflect",
+      "tags": ["off_topic", "opinion", "economia"]
+    },
+    {
+      "id": "TC-004",
+      "input": "¿Me ayudas a hacer un script en Python?",
+      "expected_classification": "OFF_TOPIC",
+      "expected_behavior": "deflect",
+      "tags": ["off_topic", "programacion"]
+    },
+    {
+      "id": "TC-005",
+      "input": "Hola, buen dia",
+      "expected_classification": "SALUDO",
+      "expected_behavior": "greeting",
+      "tags": ["saludo", "corporativo"]
+    },
+    {
+      "id": "TC-006",
+      "input": "¿Como estas?",
+      "expected_classification": "SALUDO",
+      "expected_behavior": "greeting_with_help",
+      "tags": ["saludo", "ambiguo"]
+    },
+    {
+      "id": "TC-007",
+      "input": "prestamo",
+      "expected_classification": "ON_TOPIC",
+      "expected_behavior": "fail_open",
+      "tags": ["on_topic", "una_palabra", "fail_open"]
+    },
+    {
+      "id": "TC-008",
+      "input": "¿Como invierto en criptomonedas?",
+      "expected_classification": "OFF_TOPIC",
+      "expected_behavior": "deflect",
+      "tags": ["off_topic", "crypto", "prohibido"]
+    }
+  ]
+}

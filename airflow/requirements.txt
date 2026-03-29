@@ -1,0 +1,22 @@
+# =============================================================================
+# Python Dependencies for Custom Airflow Image
+# =============================================================================
+# These packages are needed by the RAG indexing DAG
+# =============================================================================
+
+# Database connector (PostgreSQL v3 - psycopg3)
+psycopg[binary]==3.1.18
+
+# PDF processing
+PyMuPDF==1.23.8
+
+# Word document processing
+python-docx==1.1.0
+
+# Text chunking for RAG
+langchain-text-splitters==0.2.0
+
+# Google Cloud Storage SDK for downloading documents from GCS buckets
+google-cloud-storage==2.18.2
+
+# langchain-core will be installed as dependency of langchain-text-splitters (>=0.2.0)

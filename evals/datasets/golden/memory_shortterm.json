@@ -1,0 +1,143 @@
+{
+  "version": "2.0.0",
+  "category": "memory_shortterm",
+  "description": "Cadenas multi-turno que validan retencion de contexto conversacional dentro de una sesion",
+  "samples": [
+    {
+      "id": "MS-001",
+      "chain": 1,
+      "scenario": "Contexto de ubicacion del usuario",
+      "turns": [
+        {"role": "user", "content": "Soy oficial de cuentas en la sucursal de Rosario"},
+        {"role": "assistant", "expected_behavior": "acknowledge_context", "expected_contains_any": ["Rosario", "sucursal", "oficial"]},
+        {"role": "user", "content": "¿Cual es el consultorio medico mas cercano a mi ubicacion?"},
+        {"role": "assistant", "expected_behavior": "provide_info", "expected_contains": ["San Lorenzo 1338", "Rosario"]}
+      ]
+    },
+    {
+      "id": "MS-002",
+      "chain": 1,
+      "scenario": "Contexto de ubicacion del usuario — turno 2",
+      "turns": [
+        {"role": "user", "content": "Soy oficial de cuentas en la sucursal de Rosario"},
+        {"role": "assistant", "expected_behavior": "acknowledge_context", "expected_contains_any": ["Rosario", "sucursal", "oficial"]},
+        {"role": "user", "content": "¿Cual es el consultorio medico mas cercano a mi ubicacion?"},
+        {"role": "assistant", "expected_behavior": "provide_info", "expected_contains": ["San Lorenzo 1338"]},
+        {"role": "user", "content": "¿Y el de Cordoba?"},
+        {"role": "assistant", "expected_behavior": "anaphora_resolution", "expected_contains": ["25 de Mayo 160"]}
+      ]
+    },
+    {
+      "id": "MS-003",
+      "chain": 1,
+      "scenario": "Contexto de ubicacion del usuario — turno 3 (resolucion anaforica)",
+      "turns": [
+        {"role": "user", "content": "Soy oficial de cuentas en la sucursal de Rosario"},
+        {"role": "assistant", "expected_behavior": "acknowledge_context", "expected_contains_any": ["Rosario", "sucursal", "oficial"]},
+        {"role": "user", "content": "¿Cual es el consultorio medico mas cercano a mi ubicacion?"},
+        {"role": "assistant", "expected_behavior": "provide_info", "expected_contains": ["San Lorenzo 1338"]},
+        {"role": "user", "content": "¿Y el de Cordoba?"},
+        {"role": "assistant", "expected_behavior": "anaphora_resolution", "expected_contains": ["25 de Mayo 160"]}
+      ]
+    },
+    {
+      "id": "MS-004",
+      "chain": 2,
+      "scenario": "Continuidad tematica — blanqueo de PIN",
+      "turns": [
+        {"role": "user", "content": "Necesito informacion sobre el blanqueo de PIN de tarjeta de debito"},
+        {"role": "assistant", "expected_behavior": "provide_info", "expected_contains_any": ["IVR", "Banca Internet", "App", "BancoChat", "autoservicio", "autogestion"], "source_document": "005 _ Tarjeta de debito_TD006 - Solicitud de blanqueo de PIN.docx"}
+      ]
+    },
+    {
+      "id": "MS-005",
+      "chain": 2,
+      "scenario": "Continuidad tematica — referencia implicita al tema anterior",
+      "turns": [
+        {"role": "user", "content": "Necesito informacion sobre el blanqueo de PIN de tarjeta de debito"},
+        {"role": "assistant", "expected_behavior": "provide_info", "expected_contains_any": ["IVR", "Banca Internet", "App", "BancoChat", "autoservicio"]},
+        {"role": "user", "content": "¿Y cuanto tarda?"},
+        {"role": "assistant", "expected_behavior": "implicit_reference", "expected_contains_any": ["PIN", "blanqueo", "tarjeta de debito", "tarjeta de débito"]}
+      ]
+    },
+    {
+      "id": "MS-006",
+      "chain": 2,
+      "scenario": "Continuidad tematica — memoria del canal mencionado",
+      "turns": [
+        {"role": "user", "content": "Necesito informacion sobre el blanqueo de PIN de tarjeta de debito"},
+        {"role": "assistant", "expected_behavior": "provide_info", "expected_contains_any": ["IVR", "Banca Internet", "App", "BancoChat"]},
+        {"role": "user", "content": "¿Y cuanto tarda?"},
+        {"role": "assistant", "expected_behavior": "implicit_reference", "expected_contains_any": ["PIN", "blanqueo", "tarjeta"]},
+        {"role": "user", "content": "¿Hay algun otro canal ademas del que mencionaste?"},
+        {"role": "assistant", "expected_behavior": "memory_recall", "expected_contains_any": ["IVR", "Banca Internet", "App", "BancoChat", "sucursal", "canal"]}
+      ]
+    },
+    {
+      "id": "MS-007",
+      "chain": 3,
+      "scenario": "Escalacion de caso — contexto inicial",
+      "turns": [
+        {"role": "user", "content": "Un cliente quiere dar de baja su paquete Selecta"},
+        {"role": "assistant", "expected_behavior": "acknowledge_context", "expected_contains_any": ["Selecta", "baja", "retencion", "retención"], "source_document": "PAQ003 - Retencion de paquetes.docx"}
+      ]
+    },
+    {
+      "id": "MS-008",
+      "chain": 3,
+      "scenario": "Escalacion de caso — oferta de retencion",
+      "turns": [
+        {"role": "user", "content": "Un cliente quiere dar de baja su paquete Selecta"},
+        {"role": "assistant", "expected_behavior": "acknowledge_context", "expected_contains_any": ["Selecta", "baja", "retencion", "retención"]},
+        {"role": "user", "content": "¿Que oferta de retencion le puedo hacer?"},
+        {"role": "assistant", "expected_behavior": "case_continuity", "expected_contains_any": ["bonificacion", "bonificación", "campana", "campaña", "retencion", "retención"], "source_document": "PAQ003 - Retencion de paquetes.docx"}
+      ]
+    },
+    {
+      "id": "MS-009",
+      "chain": 3,
+      "scenario": "Escalacion de caso — registro de baja",
+      "turns": [
+        {"role": "user", "content": "Un cliente quiere dar de baja su paquete Selecta"},
+        {"role": "assistant", "expected_behavior": "acknowledge_context", "expected_contains_any": ["Selecta", "baja"]},
+        {"role": "user", "content": "¿Que oferta de retencion le puedo hacer?"},
+        {"role": "assistant", "expected_behavior": "case_continuity", "expected_contains_any": ["bonificacion", "bonificación", "campana", "campaña"]},
+        {"role": "user", "content": "Si no acepta, ¿como registro la baja?"},
+        {"role": "assistant", "expected_behavior": "case_escalation", "expected_contains_any": ["CRM", "baja", "paquete", "solicitud", "BAJA DE PAQUETE"], "source_document": "PAQ002 - Solicitud de baja de paquete.docx"}
+      ]
+    },
+    {
+      "id": "MS-010",
+      "chain": 4,
+      "scenario": "Caja de seguridad — requisitos",
+      "turns": [
+        {"role": "user", "content": "Quiero contratar una caja de seguridad, ¿que necesito?"},
+        {"role": "assistant", "expected_behavior": "provide_info", "expected_contains_any": ["cuenta", "18", "antigüedad", "antiguedad", "corriente"], "source_document": "CS001 - Manual del producto.docx"}
+      ]
+    },
+    {
+      "id": "MS-011",
+      "chain": 4,
+      "scenario": "Caja de seguridad — tamaños disponibles",
+      "turns": [
+        {"role": "user", "content": "Quiero contratar una caja de seguridad, ¿que necesito?"},
+        {"role": "assistant", "expected_behavior": "provide_info", "expected_contains_any": ["cuenta", "18", "antigüedad", "antiguedad"]},
+        {"role": "user", "content": "¿Que tamanos hay disponibles?"},
+        {"role": "assistant", "expected_behavior": "provide_info", "expected_contains_any": ["10x10", "10x15", "10x20", "15x15", "tamano", "tamaño", "medida"]}
+      ]
+    },
+    {
+      "id": "MS-012",
+      "chain": 4,
+      "scenario": "Caja de seguridad — visitas gratuitas",
+      "turns": [
+        {"role": "user", "content": "Quiero contratar una caja de seguridad, ¿que necesito?"},
+        {"role": "assistant", "expected_behavior": "provide_info", "expected_contains_any": ["cuenta", "18", "antigüedad", "antiguedad"]},
+        {"role": "user", "content": "¿Que tamanos hay disponibles?"},
+        {"role": "assistant", "expected_behavior": "provide_info", "expected_contains_any": ["10x10", "10x15", "tamano", "tamaño"]},
+        {"role": "user", "content": "¿Cuantas veces puedo ir al mes sin cargo?"},
+        {"role": "assistant", "expected_behavior": "memory_recall", "expected_contains": ["5"]}
+      ]
+    }
+  ]
+}

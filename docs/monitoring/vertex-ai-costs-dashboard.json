@@ -1,0 +1,152 @@
+{
+  "displayName": "Vertex AI Costs & Performance",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "xPos": 0,
+        "yPos": 0,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Requests por Modelo (Embedding vs Generation)",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "filter": "metric.type=\"aiplatform.googleapis.com/prediction/online/total_requests\" resource.type=\"aiplatform.googleapis.com/Endpoint\"",
+                    "aggregation": {
+                      "alignmentPeriod": "3600s",
+                      "crossSeriesReducer": "REDUCE_SUM",
+                      "groupByFields": [
+                        "resource.label.model_id"
+                      ],
+                      "perSeriesAligner": "ALIGN_SUM"
+                    }
+                  }
+                },
+                "plotType": "LINE"
+              }
+            ],
+            "chartOptions": {
+              "mode": "COLOR"
+            }
+          }
+        }
+      },
+      {
+        "xPos": 6,
+        "yPos": 0,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Tokens Consumidos (Input vs Output) por Hora",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "filter": "metric.type=\"aiplatform.googleapis.com/prediction/online/tokens_input\" resource.type=\"aiplatform.googleapis.com/Endpoint\"",
+                    "aggregation": {
+                      "alignmentPeriod": "3600s",
+                      "crossSeriesReducer": "REDUCE_SUM",
+                      "perSeriesAligner": "ALIGN_SUM"
+                    }
+                  }
+                },
+                "plotType": "STACKED_BAR",
+                "targetAxis": "Y1"
+              },
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "filter": "metric.type=\"aiplatform.googleapis.com/prediction/online/tokens_output\" resource.type=\"aiplatform.googleapis.com/Endpoint\"",
+                    "aggregation": {
+                      "alignmentPeriod": "3600s",
+                      "crossSeriesReducer": "REDUCE_SUM",
+                      "perSeriesAligner": "ALIGN_SUM"
+                    }
+                  }
+                },
+                "plotType": "STACKED_BAR",
+                "targetAxis": "Y1"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "xPos": 0,
+        "yPos": 4,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Latencia por Tipo de Request (p50, p95, p99)",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "filter": "metric.type=\"aiplatform.googleapis.com/prediction/online/latencies\" resource.type=\"aiplatform.googleapis.com/Endpoint\"",
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_PERCENTILE_99",
+                      "perSeriesAligner": "ALIGN_DELTA"
+                    }
+                  }
+                },
+                "plotType": "LINE"
+              },
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "filter": "metric.type=\"aiplatform.googleapis.com/prediction/online/latencies\" resource.type=\"aiplatform.googleapis.com/Endpoint\"",
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_PERCENTILE_95",
+                      "perSeriesAligner": "ALIGN_DELTA"
+                    }
+                  }
+                },
+                "plotType": "LINE"
+              },
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "filter": "metric.type=\"aiplatform.googleapis.com/prediction/online/latencies\" resource.type=\"aiplatform.googleapis.com/Endpoint\"",
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_PERCENTILE_50",
+                      "perSeriesAligner": "ALIGN_DELTA"
+                    }
+                  }
+                },
+                "plotType": "LINE"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "xPos": 6,
+        "yPos": 4,
+        "width": 6,
+        "height": 4,
+        "widget": {
+          "title": "Costo Estimado Diario (MQL) en USD",
+          "xyChart": {
+            "dataSets": [
+              {
+                "timeSeriesQuery": {
+                  "timeSeriesQueryLanguage": "fetch aiplatform.googleapis.com/Endpoint\n| metric 'aiplatform.googleapis.com/prediction/online/tokens_input'\n| align sum(1d)\n| every 1d\n| group_by [], [value_tokens_input_aggregate: aggregate(value.tokens_input)]\n| mul 0.000000125\n| join (\n    fetch aiplatform.googleapis.com/Endpoint\n    | metric 'aiplatform.googleapis.com/prediction/online/tokens_output'\n    | align sum(1d)\n    | every 1d\n    | group_by [], [value_tokens_output_aggregate: aggregate(value.tokens_output)]\n    | mul 0.000000375\n)\n| add\n"
+                },
+                "plotType": "STACKED_BAR"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

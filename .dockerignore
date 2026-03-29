@@ -1,27 +1,86 @@
-# Ignora todos los archivos y carpetas por defecto
-**
+# ==============================================================================
+# .dockerignore — Excluir del contexto de build Docker (backend API)
+# Ref: T1-S3-01 AC: excluye .git, tests, docs, __pycache__, dags/
+# ==============================================================================
 
-# Incluye carpetas que no deben ser ignoradas
-!frontends/
-!services/
-!core/
+# --- Version control ---
+.git
+.gitignore
 
-# Ignora archivos y carpetas específicos
-**/__pycache__/
-**/.pytest_cache/
-**/.venv/
-**/.DS_Store
-**/*.py[cod]
-**/*.egg-info/
-**/*.log
-**/dist/
-**/build/
-**/node_modules/
-**/.coverage
+# --- Tests y QA ---
+tests/
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
 
-# Ignora carpetas de tests
-**/tests/
+# --- Documentacion ---
+docs/
+*.md
 
-# Ignora herramientas locales
-**/.vscode/
-**/.devcontainer/
+# --- Python caches ---
+__pycache__/
+*.pyc
+*.pyo
+*.py[cod]
+*$py.class
+
+# --- Airflow DAGs (no van en imagen de API) ---
+dags/
+
+# --- Entornos virtuales ---
+.venv/
+venv/
+ENV/
+
+# --- Environment y secrets (NUNCA en imagen) ---
+.env
+.env.*
+!.env.example
+*-secrets.yaml
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Node / Frontend (no necesario para backend) ---
+node_modules/
+.next/
+frontend/
+
+# --- Docker (evitar recursion) ---
+docker-compose*.yml
+docker/Dockerfile
+docker/Dockerfile.frontend
+docker/.dockerignore
+
+# --- Build artifacts ---
+dist/
+build/
+*.egg-info/
+*.egg
+*.whl
+
+# --- Logs ---
+*.log
+logs/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Misc proyecto ---
+.mypy_cache/
+.ruff_cache/
+.benchmarks/
+specs/
+infra/
+scripts/
+.opencode/
+.claude/
+.agent/
+.github/

@@ -1,0 +1,7 @@
+#,Entregable,Responsable,Fecha Requerida,Impacta
+1,OpenText Content Server instalado y operativo,Equipo xECM,10/03/2026,Integracion IA-xECM
+2,"Configuracion xECM completa (carpetas, categorias, roles)",Equipo xECM,20/03/2026,Validacion con escenarios reales
+3,Corpus documental representativo para entrenamiento,Banco,12/03/2026,Procesamiento y calibracion del sistema
+4,"Definiciones funcionales (personalidad del asistente, temas permitidos, mensajes, branding)",Banco,7/03/2026,Configuracion seguridad y experiencia de usuario
+5,Escenarios de prueba (consultas reales con respuestas esperadas),Banco,17/03/2026,Calibracion y validacion de calidad
+6,Permisos documentales configurados en xECM,Equipo xECM,11/04/2026,Seguridad pre-produccion

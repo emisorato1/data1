@@ -1,0 +1,103 @@
+{
+  "_description": "Set de queries de evaluacion para tuning de retrieval. Cada query tiene un documento target y keywords esperadas en los resultados relevantes. Alineado con el dataset demo de T3-S4-01 (18 docs bancarios).",
+  "_usage": "python scripts/tune_retrieval.py --queries scripts/eval_queries.json",
+  "_spec": "T3-S4-02 (AC1: Set de 10+ queries de evaluacion con respuestas esperadas)",
+  "queries": [
+    {
+      "id": "q01",
+      "query": "Cuales son las medidas disponibles para las cajas de seguridad?",
+      "expected_doc_patterns": ["CS001"],
+      "expected_keywords": ["medida", "caja", "seguridad"],
+      "category": "cajas_seguridad",
+      "difficulty": "easy"
+    },
+    {
+      "id": "q02",
+      "query": "Que es un paquete de productos y que beneficios tiene?",
+      "expected_doc_patterns": ["PAQ001"],
+      "expected_keywords": ["paquete", "beneficio", "producto"],
+      "category": "paquetes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "q03",
+      "query": "Como solicitar la baja de un paquete de productos?",
+      "expected_doc_patterns": ["PAQ002", "baja de paquete"],
+      "expected_keywords": ["baja", "paquete", "solicitud"],
+      "category": "paquetes",
+      "difficulty": "easy"
+    },
+    {
+      "id": "q04",
+      "query": "Como retener a un cliente que quiere cancelar su paquete?",
+      "expected_doc_patterns": ["PAQ003", "Retenci"],
+      "expected_keywords": ["retencion", "cliente", "paquete"],
+      "category": "paquetes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "q05",
+      "query": "Como dar de alta un paquete en el sistema Cobis?",
+      "expected_doc_patterns": ["PAQ005", "Alta de Paquete"],
+      "expected_keywords": ["alta", "paquete", "cobis"],
+      "category": "paquetes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "q06",
+      "query": "Como hacer un upgrade de paquete en el sistema?",
+      "expected_doc_patterns": ["PAQ006", "Upgrade de Paquete"],
+      "expected_keywords": ["upgrade", "paquete"],
+      "category": "paquetes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "q07",
+      "query": "Cuales son los requisitos para un prestamo hipotecario UVA?",
+      "expected_doc_patterns": ["PP001"],
+      "expected_keywords": ["prestamo", "hipotecario", "UVA", "requisito"],
+      "category": "prestamos",
+      "difficulty": "easy"
+    },
+    {
+      "id": "q08",
+      "query": "Como se otorga un prestamo personal desde el Contact Center?",
+      "expected_doc_patterns": ["PP002", "Otorgamiento"],
+      "expected_keywords": ["otorgamiento", "prestamo", "contact"],
+      "category": "prestamos",
+      "difficulty": "medium"
+    },
+    {
+      "id": "q09",
+      "query": "Como pagar la cuota de un prestamo personal por CRM?",
+      "expected_doc_patterns": ["PP003", "Pago de cuota"],
+      "expected_keywords": ["pago", "cuota", "CRM"],
+      "category": "prestamos",
+      "difficulty": "medium"
+    },
+    {
+      "id": "q10",
+      "query": "Como denunciar un accidente de trabajo?",
+      "expected_doc_patterns": ["Salud", "RRHH"],
+      "expected_keywords": ["accidente", "trabajo", "denuncia"],
+      "category": "rrhh",
+      "difficulty": "easy"
+    },
+    {
+      "id": "q11",
+      "query": "Cual es el proceso de revocacion de un prestamo personal?",
+      "expected_doc_patterns": ["PP004", "Revocacion", "revocacion"],
+      "expected_keywords": ["revocacion", "prestamo"],
+      "category": "prestamos",
+      "difficulty": "medium"
+    },
+    {
+      "id": "q12",
+      "query": "Que beneficios de bienestar ofrece el banco a sus empleados?",
+      "expected_doc_patterns": ["RRHH", "Beneficio"],
+      "expected_keywords": ["beneficio", "empleado", "bienestar"],
+      "category": "rrhh",
+      "difficulty": "medium"
+    }
+  ]
+}

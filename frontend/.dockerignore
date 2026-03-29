@@ -1,0 +1,43 @@
+# ==============================================================================
+# .dockerignore — Frontend Next.js
+# Excluir del contexto de build Docker para reducir tamano y velocidad
+# ==============================================================================
+
+# --- Dependencies (se instalan en el build) ---
+node_modules/
+
+# --- Build output (se genera en el build) ---
+.next/
+out/
+
+# --- Version control ---
+.git
+.gitignore
+
+# --- Environment y secrets ---
+.env
+.env.*
+!.env.example
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log
+npm-debug.log*
+
+# --- Test artifacts ---
+coverage/
+.jest/
+
+# --- Docker (evitar recursion) ---
+Dockerfile*
+docker-compose*.yml

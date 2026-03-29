@@ -1,0 +1,72 @@
+{
+    "version": "2.0.0",
+    "category": "cache_behavior",
+    "description": "Pruebas de consistencia y velocidad de respuesta. Envia la misma pregunta dos veces: la primera para primar cache (si existe), la segunda para verificar contenido correcto y medir tiempo",
+    "cache_hit_threshold_ms": 1500,
+    "samples": [
+        {
+            "id": "CB-001",
+            "input": "¿Cual es el telefono de emergencias de la ART?",
+            "expected_behavior": "cache_hit",
+            "expected_contains": ["0800-888-0093"],
+            "source_document": "008 RRHH - Salud, Prevencion y Medio Ambiente.pdf",
+            "tags": ["cache", "dato_puntual", "art"]
+        },
+        {
+            "id": "CB-002",
+            "input": "¿Cuantas visitas gratuitas al mes tengo para la caja de seguridad?",
+            "expected_behavior": "cache_hit",
+            "expected_contains": ["5"],
+            "source_document": "CS001 - Manual del producto.docx",
+            "tags": ["cache", "dato_puntual", "caja_seguridad"]
+        },
+        {
+            "id": "CB-003",
+            "input": "¿Cuantos dias tengo para revocar un prestamo personal?",
+            "expected_behavior": "cache_hit",
+            "expected_contains": ["10"],
+            "source_document": "PP004 - Revocacion de prestamo personal.docx",
+            "tags": ["cache", "dato_puntual", "prestamo"]
+        },
+        {
+            "id": "CB-004",
+            "input": "¿Donde esta el consultorio medico de Rosario?",
+            "expected_behavior": "cache_hit",
+            "expected_contains": ["San Lorenzo 1338"],
+            "source_document": "008 RRHH - Salud, Prevencion y Medio Ambiente.pdf",
+            "tags": ["cache", "dato_puntual", "consultorio"]
+        },
+        {
+            "id": "CB-005",
+            "input": "¿Cuantos dias de licencia por matrimonio corresponden?",
+            "expected_behavior": "cache_hit",
+            "expected_contains": ["12"],
+            "source_document": "001 RRHH - Administracion.pdf",
+            "tags": ["cache", "dato_puntual", "licencia"]
+        },
+        {
+            "id": "CB-006",
+            "input": "¿Cual es el tiempo de procesamiento para el cambio de limite provisorio de tarjeta de debito?",
+            "expected_behavior": "cache_hit",
+            "expected_contains_any": ["24", "48"],
+            "source_document": "005 _ Tarjeta de debito_TD002 - Cambio limite provisorio para pago de servicios.pdf",
+            "tags": ["cache", "dato_puntual", "tarjeta_debito"]
+        },
+        {
+            "id": "CB-007",
+            "input": "¿Cuantos dias de licencia por nacimiento tiene el padre?",
+            "expected_behavior": "cache_hit",
+            "expected_contains": ["20"],
+            "source_document": "001 RRHH - Administracion.pdf",
+            "tags": ["cache", "dato_puntual", "licencia_nacimiento"]
+        },
+        {
+            "id": "CB-008",
+            "input": "¿Hasta que edad estan cubiertos los hijos en la obra social?",
+            "expected_behavior": "cache_hit",
+            "expected_contains": ["21"],
+            "source_document": "001 RRHH - Administracion.pdf",
+            "tags": ["cache", "dato_puntual", "obra_social"]
+        }
+    ]
+}

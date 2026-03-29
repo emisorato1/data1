@@ -1,0 +1,176 @@
+[project]
+name = "enterprise-ai-platform"
+version = "0.1.0"
+description = "Sistema RAG Enterprise para documentación bancaria con búsqueda híbrida, LangGraph y guardrails"
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+
+# ── Dependencias core ──
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "sqlalchemy[asyncio]>=2.0.36",
+    "alembic>=1.14.0",
+    "pydantic-settings>=2.6.0",
+    "psycopg[binary]>=3.2.0",
+    "psycopg-pool>=3.2.0",
+    "pgvector>=0.3.6",
+    "redis>=5.2.0",
+    "langchain>=0.3.0",
+    "langchain-text-splitters>=0.3.0",
+    "langchain-google-genai>=2.0.0",
+    "langchain-google-vertexai>=2.0.0",
+    "langgraph>=1.0.10",
+    "langgraph-checkpoint-postgres>=2.0.0",
+    "langfuse>=2.50.0",
+    "structlog>=24.4.0,<25.5.0",  # <25.5.0: Styles renamed to ColumnStyles, breaks Airflow 3.x
+    "bcrypt>=4.2.0",
+    "pyjwt[crypto]>=2.12.0",  # CVE-2026-32597: header crit no validado
+    "python-multipart>=0.0.12",
+    "httpx>=0.28.0",
+    "tenacity>=9.0.0",
+    "asyncpg>=0.31.0",
+    "pymupdf>=1.27.1",
+    "python-docx>=1.2.0",
+    "pandas>=3.0.1",
+    "tabulate>=0.9.0",
+    "tiktoken>=0.7.0",
+    "google-cloud-discoveryengine>=0.17.0",
+    "sse-starlette>=2.0.0",
+    "ragas>=0.4.3",
+    # NOTE: diskcache 5.6.3 has CVE-2025-69872 (transitive from ragas/instructor).
+    # No fix released yet. Monitor for 5.6.4+ and pin when available.
+    # ── CVE constraints (transitive deps pinned for security) ──
+    "pyasn1>=0.6.3",    # CVE-2026-30922: DoS recursión ASN.1 (via google-auth)
+    "requests>=2.33.0", # CVE-2026-25645: temp file predecible
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.8.0",
+    "mypy>=1.13.0",
+    "types-redis>=4.6.0",
+    "pre-commit>=4.0.0",
+    "ipython>=8.29.0",
+]
+test = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.0.0",
+    "pytest-xdist>=3.5.0",
+    "pytest-timeout>=2.3.0",
+    "pytest-mock>=3.14.0",
+    "httpx>=0.28.0",
+    "factory-boy>=3.3.0",
+    "testcontainers[postgres,redis]>=4.8.0",
+]
+airflow = [
+    "apache-airflow>=3.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+# ── Ruff (linter + formatter) ──
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+src = ["src", "tests", "evals"]
+
+[tool.ruff.lint]
+select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "I",     # isort
+    "N",     # pep8-naming
+    "UP",    # pyupgrade
+    "B",     # flake8-bugbear
+    "A",     # flake8-builtins
+    "S",     # flake8-bandit (security)
+    "T20",   # flake8-print
+    "SIM",   # flake8-simplify
+    "TCH",   # flake8-type-checking
+    "RUF",   # ruff-specific
+]
+ignore = [
+    "S101",  # assert allowed in tests
+    "B008",  # function calls in defaults (FastAPI Depends)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "S105", "S106", "S108"]
+"evals/**/*.py" = ["S101", "S105", "S106", "S108"]
+"src/infrastructure/llm/prompts/system_prompt.py" = ["S105"]  # prompt text, not passwords
+"src/infrastructure/llm/prompts/clarification_prompt.py" = ["E501"]  # prompt text — long lines expected
+"dags/**/*.py" = ["T20"]
+"scripts/**/*.py" = ["T20"]
+"scripts/generate_pdf.py" = ["T20", "E501", "W291", "W293", "E402", "B007"]  # HTML template script
+"debug_hash.py" = ["T20"]  # debug script uses print
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+# ── Mypy (type checking) ──
+[tool.mypy]
+python_version = "3.12"
+strict = false
+warn_return_any = true
+warn_unused_configs = true
+check_untyped_defs = true
+ignore_missing_imports = true
+plugins = ["pydantic.mypy"]
+
+# ── Pytest ──
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+timeout = 30
+markers = [
+    "unit: Unit tests (no I/O)",
+    "integration: Integration tests (requires DB/Redis)",
+    "e2e: End-to-end tests (full API flow)",
+    "security: Security tests (injection, access control)",
+    "slow: Slow tests (>5s)",
+    "smoke: Smoke tests (critical path)",
+    "eval: RAG evaluation tests (golden dataset, LLM calls, non-deterministic)",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning:langchain.*",
+]
+addopts = [
+    "--strict-markers",
+    "--tb=short",
+    "-q",
+]
+
+# ── Coverage ──
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "src/config/*",
+    "src/infrastructure/database/migrations/*",
+]
+
+[tool.coverage.report]
+fail_under = 80
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@abstractmethod",
+]
+
+[dependency-groups]
+dev = [
+    "detect-secrets>=1.5.0",
+    "mypy>=1.19.1",
+    "pip-audit>=2.10.0",
+    "ruff>=0.15.1",
+]
